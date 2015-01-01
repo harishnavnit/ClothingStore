@@ -7,29 +7,40 @@ package clothes;
 
 import java.sql.*;
 import customer.login.*;
+import java.util.LinkedList;
+import java.util.List;
 import stores.*;
 
 public class purchaseHistory extends javax.swing.JFrame {
 
-    // SQL variables
-    Connection c = null;
-    Statement  s = null;
-    ResultSet rs = null;
+    String  serialNum, storeName, clothType, clothColor, clothSize, clothPrice;
+    int clothId, storeId;
     
-    String  c_type, s_name, c_id;
-    int     s_id, c_price;
+    // SQL variables
+    Connection          c = null;
+    Statement           s = null;
+    ResultSet           rs = null;
+    ResultSetMetaData   meta = null;
+    
+    /* Lists to contain tabular data */
+    List<List<String>>  rows            = new LinkedList<> ();
+    List<Integer>       serialNumList   = new LinkedList<> ();
+    List<Integer>       clothIdList     = new LinkedList<> ();
+    List<Integer>       storeIdList     = new LinkedList<> ();
+    List<String>        clothTypeList   = new LinkedList<> ();
+    List<String>        clothSizeList   = new LinkedList<> ();
+    List<String>        clothPriceList  = new LinkedList<> ();
+    List<String>        storeNameList   = new LinkedList<> ();
     
     public purchaseHistory() {
-        
         initComponents();
-        
         try {
             establishConnection();
-            getInsertData();
-            displayPurchaseTable(c_type, s_name, c_price);
+            populateData();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        displayPurchaseTable();
     }
 
     @SuppressWarnings("unchecked")
@@ -41,19 +52,8 @@ public class purchaseHistory extends javax.swing.JFrame {
         shopAgainButton = new javax.swing.JButton();
         leaveStoreButton = new javax.swing.JButton();
         purchaseDoneSoFarLabel = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        customerIdTextPane = new javax.swing.JTextPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        clothTypeTextPane = new javax.swing.JTextPane();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        storeIdTextPane = new javax.swing.JTextPane();
-        serialNoLabel = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        clothPriceTextPane = new javax.swing.JTextPane();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        purchaseHistoryScrollPane = new javax.swing.JScrollPane();
+        purchaseHistoryTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.CardLayout());
@@ -79,31 +79,39 @@ public class purchaseHistory extends javax.swing.JFrame {
         purchaseDoneSoFarLabel.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
         purchaseDoneSoFarLabel.setText("Purchases done so far");
 
-        customerIdTextPane.setEditable(false);
-        jScrollPane3.setViewportView(customerIdTextPane);
+        purchaseHistoryTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "S.No", "Store Name", "Cloth Type", "Cloth Size", "Cloth Price"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
 
-        clothTypeTextPane.setEditable(false);
-        jScrollPane2.setViewportView(clothTypeTextPane);
-
-        storeIdTextPane.setEditable(false);
-        jScrollPane4.setViewportView(storeIdTextPane);
-
-        serialNoLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        serialNoLabel.setText("S.No");
-
-        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel2.setText("Purchase Details");
-
-        jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel3.setText("Store");
-
-        jScrollPane1.setViewportView(clothPriceTextPane);
-
-        jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel4.setText("Type");
-
-        jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel5.setText("Price");
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        purchaseHistoryScrollPane.setViewportView(purchaseHistoryTable);
 
         javax.swing.GroupLayout purchaseHistoryPanelLayout = new javax.swing.GroupLayout(purchaseHistoryPanel);
         purchaseHistoryPanel.setLayout(purchaseHistoryPanelLayout);
@@ -112,72 +120,37 @@ public class purchaseHistory extends javax.swing.JFrame {
             .addGroup(purchaseHistoryPanelLayout.createSequentialGroup()
                 .addGroup(purchaseHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(purchaseHistoryPanelLayout.createSequentialGroup()
-                        .addGap(69, 69, 69)
-                        .addComponent(shopAgainButton)
-                        .addGap(50, 50, 50)
-                        .addComponent(leaveStoreButton))
-                    .addGroup(purchaseHistoryPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(purchaseHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(serialNoLabel))
-                        .addGap(18, 18, 18)
-                        .addGroup(purchaseHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(purchaseHistoryPanelLayout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(purchaseHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(purchaseHistoryPanelLayout.createSequentialGroup()
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(16, 16, 16))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, purchaseHistoryPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(49, 49, 49)))
-                        .addGroup(purchaseHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, purchaseHistoryPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(17, 17, 17))))
-                    .addGroup(purchaseHistoryPanelLayout.createSequentialGroup()
-                        .addGap(125, 125, 125)
-                        .addComponent(jLabel2))
-                    .addGroup(purchaseHistoryPanelLayout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addGroup(purchaseHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(purchaseDoneSoFarLabel)
-                            .addComponent(partingImageDisplayLabel))))
-                .addContainerGap(17, Short.MAX_VALUE))
+                                .addGap(63, 63, 63)
+                                .addComponent(shopAgainButton)
+                                .addGap(74, 74, 74)
+                                .addComponent(leaveStoreButton))
+                            .addGroup(purchaseHistoryPanelLayout.createSequentialGroup()
+                                .addGap(66, 66, 66)
+                                .addGroup(purchaseHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(purchaseDoneSoFarLabel)
+                                    .addComponent(partingImageDisplayLabel))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, purchaseHistoryPanelLayout.createSequentialGroup()
+                        .addGap(0, 15, Short.MAX_VALUE)
+                        .addComponent(purchaseHistoryScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         purchaseHistoryPanelLayout.setVerticalGroup(
             purchaseHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(purchaseHistoryPanelLayout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addComponent(partingImageDisplayLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(62, 62, 62)
+                .addGap(28, 28, 28)
                 .addComponent(purchaseDoneSoFarLabel)
+                .addGap(31, 31, 31)
+                .addComponent(purchaseHistoryScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(purchaseHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, purchaseHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(serialNoLabel)
-                        .addComponent(jLabel4))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, purchaseHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(jLabel5)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(purchaseHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3)
-                    .addComponent(jScrollPane4)
-                    .addComponent(jScrollPane1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addGroup(purchaseHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(shopAgainButton)
                     .addComponent(leaveStoreButton))
-                .addGap(46, 46, 46))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
 
         getContentPane().add(purchaseHistoryPanel, "card2");
@@ -191,9 +164,133 @@ public class purchaseHistory extends javax.swing.JFrame {
 
     private void shopAgainButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shopAgainButtonActionPerformed
         new stores.Stores().setVisible(true);
-        this.setVisible(false);        
+        this.setVisible(false);
     }//GEN-LAST:event_shopAgainButtonActionPerformed
+    
+    public boolean establishConnection() {
+        
+        System.out.println("\nEstablishing Connection");
+        try {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/dennis", "dennis", "earlscourt");
+        }
+        catch (Exception e) {
+            System.err.println("\nFailed to connect to Database");
+            e.printStackTrace();
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public void populateData() {
+        // Use the getStoreName function
+        try {
+            if (establishConnection()) {
+                s = c.createStatement();
+                rs = s.executeQuery("SELECT * from cloth");
+                meta = rs.getMetaData();
+                final int col_count = meta.getColumnCount();
+                
+                while (rs.next()) {
+                    for (int i = 1; i <= col_count; i++) {
+                        serialNumList.add(i);
+                        
+                        Object val = rs.getObject(i);
+                        
+                        if (val != null) {
+                            //if (i == 1)     {storeIdList.add((Integer) val); getStoreName((Integer) val); }
+                            if (i == 2)     clothIdList.add((Integer) val);
+                            if (i == 3)     clothTypeList.add(String.valueOf(val));
+                            if (i == 4)     System.out.println("Cloth Color : " + String.valueOf(val));                            
+                            if (i == 5)     clothSizeList.add(String.valueOf(val));
+                            if (i == 6)     clothPriceList.add(String.valueOf(val));
+                        }
+                        else {
+                            //if (i == 1)     {storeIdList.add(null); getStoreName((Integer) val); }
+                            if (i == 2)     clothIdList.add(null);
+                            if (i == 3)     clothTypeList.add(null);
+                            if (i == 4)     System.out.println("Cloth Color : " + String.valueOf(val));
+                            if (i == 5)     clothSizeList.add(null);
+                            if (i == 6)     clothPriceList.add(String.valueOf(val));
+                        }
+                    }
+                    
+                    /* Insert columns into the rows */
+                    //rows.add(serialNumList);
+                    rows.add(storeNameList);
+                    rows.add(clothTypeList);
+                    rows.add(clothSizeList);
+                    rows.add(clothPriceList);
+                }
+            } else {
+                System.err.println("\nPlease ensure you're connected to the Database.");
+            }        
+        } catch (Exception e) {
+            System.err.println("Failed to fetch the data from database !");
+            e.printStackTrace();
+        }
+        
+        //updatePurchaseTable(storeId, clothId);
+    }
+    
+    public void getStoreName(int val) {
+        
+        try {
+            if (establishConnection()) {
+                s = c.createStatement();
+                s.executeQuery("select getStoreName(" + val + ")");
+                
+                while (rs.next()) {
+                    String name = rs.getString("getstorename");
+                    storeNameList.add(name);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("\nFailed to retrieve the store name");
+            e.printStackTrace();
+        }
+    }
+    
+    public void updatePurchaseTable(int storeId, int clothId) {
+        /** NOTE : relation in backend has changed ! 
+         *  Need to provide customerId as one of the
+         * arguments along with the list of args present already
+         */
+        System.out.println("Updating the reference table");
+        String insert = "INSERT into purchase_history values (" + storeId + "," + clothId + ")";
+        try {
+            establishConnection();
+            s  = c.createStatement();
+            s.executeUpdate(insert);
+            
+            s.close();
+            c.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void displayPurchaseTable() {
 
+        int row_count        = purchaseHistoryTable.getRowCount();      System.out.print("Table Row Count : " + row_count);
+        int col_count        = purchaseHistoryTable.getColumnCount();
+        int actual_row_count = rows.size();                 
+        int actual_col_count = serialNumList.size();        
+        
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (j == 0)     purchaseHistoryTable.setValueAt((Object)serialNumList.get(i), i, j);
+                if (j == 1)     purchaseHistoryTable.setValueAt((Object)clothIdList.get(i), i, j);
+                //if (j == 2)     purchaseHistoryTable.setValueAt((Object)storeNameList.get(j), i, j);
+                if (j == 2)     purchaseHistoryTable.setValueAt((Object)clothTypeList.get(i), i, j);
+                if (j == 3)     purchaseHistoryTable.setValueAt(clothSizeList.get(i), i, j);
+                if (j == 4)     purchaseHistoryTable.setValueAt((Object)clothPriceList.get(i), i, j);
+            }
+        } 
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -226,140 +323,14 @@ public class purchaseHistory extends javax.swing.JFrame {
         });
     }
 
-    public boolean establishConnection() {
-        
-        System.out.println("\nEstablishing Connection");
-        try {
-            Class.forName("org.postgresql.Driver");
-            //c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "harish", "earlscourt");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/dennis", "dennis", "earlscourt");
-        }
-        catch (Exception e) {
-            System.err.println("\nFailed to connect to Database");
-            e.printStackTrace();
-            return false;
-        }
-        
-        return true;
-    }
-    
-    public void getInsertData() {
-        
-        System.out.println("\nCollecting data to be inserted");
-        String storeTable   = "SELECT s_id, s_name from stores";
-        String clothTable   = "SELECT cloth_type, cloth_price from cloth";
-        
-        /* Get data from the stores table */
-        try {
-                if (establishConnection()) {
-            
-                s = c.createStatement();
-                rs = s.executeQuery(storeTable);
-            
-                while (rs.next()) {
-                    s_id    = rs.getInt("s_id");
-                    s_name  = rs.getString("s_name");
-                }
-            
-                c.close();
-                s.close();
-                rs.close();
-            }
-        }catch (Exception e) {
-            System.err.println("Connection Failed while fetching data from stores table");
-            e.printStackTrace();
-        }
-        
-        /* Get data from the cloth table */
-        try {
-                if (establishConnection()) {
-                s  = c.createStatement();
-                rs = s.executeQuery(clothTable);
-            
-                while (rs.next()) {
-                    c_type = rs.getString("cloth_type");
-                    c_price   = rs.getInt("cloth_price");
-                }
-            
-                c.close();
-                s.close();
-                rs.close();
-            }
-        } catch (Exception e) {
-            System.err.println("\nConnection Failed while fetching data from cloth table");
-            e.printStackTrace();
-        }
-        
-        /* Get data for the store name */
-        String function = "select getstoreName(" + s_id + ")";
-        try {
-            if (establishConnection()) {
-                s = c.createStatement();
-                rs = s.executeQuery(function);
-                
-                while (rs.next()) {
-                    s_name = rs.getString("s_name");
-                }
-                
-                c.close();
-                s.close();
-                rs.close();
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        updatePurchaseTable(s_id, c_id);
-    }
-    
-    public void updatePurchaseTable(int sId, String cId) {
-        
-        System.out.println("Time to update the table");
-        System.out.println("s_id = " + sId);
-        System.out.println("C_ID = " + cId);
-        String insert = "INSERT into purchase_history values (" +
-                "'" + sId + "'" + "'" + cId + "')";
-        
-        try {
-            establishConnection();
-            s  = c.createStatement();
-            s.executeUpdate(insert);
-            
-            s.close();
-            c.close();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public void displayPurchaseTable(String ctype, String storeName, int c_price) {
-        
-        System.out.println("\nPrinting out the values in the tables");
-        clothTypeTextPane.setText(clothTypeTextPane.getText() + "\n" + ctype);
-        storeIdTextPane.setText(storeIdTextPane.getText() + "\n" + storeName);
-        clothPriceTextPane.setText(clothPriceTextPane.getText() + "\n" + c_price);
-    }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextPane clothPriceTextPane;
-    private javax.swing.JTextPane clothTypeTextPane;
-    private javax.swing.JTextPane customerIdTextPane;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JButton leaveStoreButton;
     private javax.swing.JLabel partingImageDisplayLabel;
     private javax.swing.JLabel purchaseDoneSoFarLabel;
     private javax.swing.JPanel purchaseHistoryPanel;
-    private javax.swing.JLabel serialNoLabel;
+    private javax.swing.JScrollPane purchaseHistoryScrollPane;
+    private javax.swing.JTable purchaseHistoryTable;
     private javax.swing.JButton shopAgainButton;
-    private javax.swing.JTextPane storeIdTextPane;
     // End of variables declaration//GEN-END:variables
 
 }

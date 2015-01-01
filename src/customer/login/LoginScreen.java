@@ -24,9 +24,8 @@ public class LoginScreen extends javax.swing.JFrame {
     boolean dbConnected, customerLoggedIn;
 
     public LoginScreen() {
-        // Establish a conneciton on startup
-        dbConnected = establishConnection();
         initComponents();
+        dbConnected = establishConnection();
     }
 
     @SuppressWarnings("unchecked")
@@ -402,7 +401,6 @@ public class LoginScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_homeScreenExitButtonActionPerformed
 
     private void homeScreenBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeScreenBackButtonActionPerformed
-        //loginScreenPanel.setVisible(true);
         new LoginScreen().setVisible(true);
         homeScreenPanel.setVisible(false);
     }//GEN-LAST:event_homeScreenBackButtonActionPerformed
