@@ -20,7 +20,16 @@ public class purchaseHistory extends javax.swing.JFrame {
     int     s_id, c_price;
     
     public purchaseHistory() {
+        
         initComponents();
+        
+        try {
+            establishConnection();
+            getInsertData();
+            displayPurchaseTable(c_type, s_name, c_price);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -217,36 +226,45 @@ public class purchaseHistory extends javax.swing.JFrame {
         });
     }
 
-    public void establishConnection() {
+    public boolean establishConnection() {
+        
+        System.out.println("\nEstablishing Connection");
         try {
             Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "harish", "earlscourt");
+            //c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "harish", "earlscourt");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/dennis", "dennis", "earlscourt");
         }
         catch (Exception e) {
             System.err.println("\nFailed to connect to Database");
             e.printStackTrace();
+            return false;
         }
+        
+        return true;
     }
     
     public void getInsertData() {
         
+        System.out.println("\nCollecting data to be inserted");
         String storeTable   = "SELECT s_id, s_name from stores";
         String clothTable   = "SELECT cloth_type, cloth_price from cloth";
         
         /* Get data from the stores table */
         try {
-            establishConnection();
-            s = c.createStatement();
-            rs = s.executeQuery(storeTable);
+                if (establishConnection()) {
             
-            while (rs.next()) {
-                s_id    = rs.getInt("s_id");
-                s_name  = rs.getString("s_name");
+                s = c.createStatement();
+                rs = s.executeQuery(storeTable);
+            
+                while (rs.next()) {
+                    s_id    = rs.getInt("s_id");
+                    s_name  = rs.getString("s_name");
+                }
+            
+                c.close();
+                s.close();
+                rs.close();
             }
-            
-            c.close();
-            s.close();
-            rs.close();
         }catch (Exception e) {
             System.err.println("Connection Failed while fetching data from stores table");
             e.printStackTrace();
@@ -254,28 +272,49 @@ public class purchaseHistory extends javax.swing.JFrame {
         
         /* Get data from the cloth table */
         try {
-            establishConnection();
-            s  = c.createStatement();
-            rs = s.executeQuery(clothTable);
+                if (establishConnection()) {
+                s  = c.createStatement();
+                rs = s.executeQuery(clothTable);
             
-            while (rs.next()) {
-                c_type = rs.getString("cloth_type");
-                c_price   = rs.getInt("cloth_price");
+                while (rs.next()) {
+                    c_type = rs.getString("cloth_type");
+                    c_price   = rs.getInt("cloth_price");
+                }
+            
+                c.close();
+                s.close();
+                rs.close();
             }
-            
-            c.close();
-            s.close();
-            rs.close();
         } catch (Exception e) {
             System.err.println("\nConnection Failed while fetching data from cloth table");
             e.printStackTrace();
         }
         
+        /* Get data for the store name */
+        String function = "select getstoreName(" + s_id + ")";
+        try {
+            if (establishConnection()) {
+                s = c.createStatement();
+                rs = s.executeQuery(function);
+                
+                while (rs.next()) {
+                    s_name = rs.getString("s_name");
+                }
+                
+                c.close();
+                s.close();
+                rs.close();
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         updatePurchaseTable(s_id, c_id);
     }
     
     public void updatePurchaseTable(int sId, String cId) {
         
+        System.out.println("Time to update the table");
         System.out.println("s_id = " + sId);
         System.out.println("C_ID = " + cId);
         String insert = "INSERT into purchase_history values (" +
@@ -296,6 +335,7 @@ public class purchaseHistory extends javax.swing.JFrame {
     
     public void displayPurchaseTable(String ctype, String storeName, int c_price) {
         
+        System.out.println("\nPrinting out the values in the tables");
         clothTypeTextPane.setText(clothTypeTextPane.getText() + "\n" + ctype);
         storeIdTextPane.setText(storeIdTextPane.getText() + "\n" + storeName);
         clothPriceTextPane.setText(clothPriceTextPane.getText() + "\n" + c_price);

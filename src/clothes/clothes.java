@@ -13,27 +13,33 @@ import stores.Stores;
 
 public class clothes extends javax.swing.JFrame {
 
+    int index = 0;
+    
     // SQL variables
     Connection          c = null;
     Statement           s = null;
     ResultSet           rs = null;
     ResultSetMetaData   meta = null;
-    
+
     /* Lists to contain data */
-    List<List<String>>  rowList     = new LinkedList<> ();
-    List<String>        columnList  = new LinkedList<> ();
-    
+    List<List<String>>  rowList         = new LinkedList<> ();
+    List<String>        clothIDList     = new LinkedList<> ();
+    List<String>        clothTypeList   = new LinkedList<> ();
+    List<String>        clothColorList  = new LinkedList<> ();
+    List<String>        clothSizeList   = new LinkedList<> ();
+    List<String>        clothPriceList  = new LinkedList<> ();
+
     public clothes() {
         initComponents();
-        
+
         try {
             populateData();
-            loadClothesTable();
+            loadClothesTable(index);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -182,29 +188,43 @@ public class clothes extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void populateData() {
+        
         try {
             Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost/mydb", "harish", "earlscourt");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/dennis", "dennis", "earlscourt");
             s = c.createStatement();
             rs = s.executeQuery("SELECT * from cloth");
             meta = rs.getMetaData();
             final int col_count = meta.getColumnCount();
-            
+
             while (rs.next()) {
-                rowList.add(columnList);
-                
+
                 for (int i = 1; i < col_count; i++) {
                     Object value = rs.getObject(i);
-                    
+
                     if (value != null) {
-                        columnList.add(String.valueOf(value));
+                        if (i == 1)     clothIDList.add(String.valueOf(value));
+                        if (i == 2)     clothTypeList.add(String.valueOf(value));
+                        if (i == 3)     clothColorList.add(String.valueOf(value));
+                        if (i == 4)     clothSizeList.add(String.valueOf(value));
+                        if (i == 5)     clothPriceList.add(String.valueOf(value));
                     }
                     else {
-                        columnList.add(null);
+                        if (i == 1)     clothIDList.add(String.valueOf(value));
+                        if (i == 2)     clothTypeList.add(String.valueOf(value));
+                        if (i == 3)     clothColorList.add(String.valueOf(value));
+                        if (i == 4)     clothSizeList.add(String.valueOf(value));
+                        if (i == 5)     clothPriceList.add(String.valueOf(value));
                     }
                 }
+                
+                rowList.add(clothIDList);
+                rowList.add(clothTypeList);
+                rowList.add(clothColorList);
+                rowList.add(clothSizeList);
+                rowList.add(clothPriceList);
             }
-            
+
             // Closing all open connections
             s.close();
             c.close();
@@ -214,40 +234,17 @@ public class clothes extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
-    /**
-     *
-     */
-    public void loadClothesTable() {
-        for(int i = 0; i < rowList.size(); i++) {  
-            int j = 0;
-            List<String> cols = rowList.get(i);
-            String curr_val = cols.get(i);
-            
-            do  {
-                System.out.print("\nElement at " + j + " = " + cols.get(j));
-                curr_val = cols.get(j);
-                if (j < 5) {
-                    if (j == 0)     clothIdLabel.setText(curr_val);
-                    if (j == 1)     clothTypeLabel.setText(curr_val);
-                    if (j == 2)     clothColorLabel.setText(curr_val);
-                    if (j == 3)     clothSizeLabel.setText(curr_val);
-                    if (j == 4)     clothPriceLabel.setText(curr_val);
-                }
-                else {
-                    if (j % 5 == 0)     clothIdLabel.setText(curr_val);
-                    if (j % 5 == 1)     clothTypeLabel.setText(curr_val);
-                    if (j % 5 == 2)     clothColorLabel.setText(curr_val);
-                    if (j % 5 == 3)     clothSizeLabel.setText(curr_val);
-                    if (j % 5 == 4)     clothPriceLabel.setText(curr_val);                
-                }
-                // Increment j onViewNextButton press
-                //if (viewNextStoreButtonActionPerformed()) ++j;
-                j++;
-            }   while (j < cols.size());
-        }
+
+    public void loadClothesTable(int index) {
+        List<String> columns = rowList.get(index);
+        
+        clothIdLabel.setText(clothIDList.get(index));
+        clothTypeLabel.setText(clothTypeList.get(index));
+        clothColorLabel.setText(clothColorList.get(index));
+        clothSizeLabel.setText(clothSizeList.get(index));
+        clothPriceLabel.setText(clothPriceList.get(index));
     }
-    
+
     private void purchaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purchaseButtonActionPerformed
         new purchaseHistory().setVisible(true);
         this.setVisible(false);
@@ -259,14 +256,16 @@ public class clothes extends javax.swing.JFrame {
     }//GEN-LAST:event_clothBackButtonActionPerformed
 
     private void clothNextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clothNextButtonActionPerformed
-        loadClothesTable();
+        ++index;
+        if (index >= 5) index = 0;
+        loadClothesTable(index);
     }//GEN-LAST:event_clothNextButtonActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

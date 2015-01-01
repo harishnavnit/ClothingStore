@@ -132,13 +132,13 @@ public class LoginScreen extends javax.swing.JFrame {
                             .addGroup(loginScreenPanelLayout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(41, Short.MAX_VALUE))))
+                        .addContainerGap(65, Short.MAX_VALUE))))
         );
         loginScreenPanelLayout.setVerticalGroup(
             loginScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(loginScreenPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(imageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(imageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(loginScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(userNameLabel)
@@ -304,7 +304,8 @@ public class LoginScreen extends javax.swing.JFrame {
             try {
                 // Register the driver
                 Class.forName("org.postgresql.Driver");
-                c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "harish", "earlscourt");
+                //c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "harish", "earlscourt");
+                c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/dennis", "dennis", "earlscourt");
             }
             catch (Exception e) {
                 e.printStackTrace();
@@ -375,13 +376,15 @@ public class LoginScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_exitButtonActionPerformed
 
     private void enterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterButtonActionPerformed
+        
         try {
+            dbConnected = establishConnection();
             customerLoggedIn = customerLogin();
         } catch (SQLException ex) {
             Logger.getLogger(LoginScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        if (customerLoggedIn) {
+        if (customerLoggedIn && dbConnected) {
             System.out.println("Customer Login Successful");
             homeScreenPanel.setVisible(true); 
             loginScreenPanel.setVisible(false);
@@ -399,7 +402,8 @@ public class LoginScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_homeScreenExitButtonActionPerformed
 
     private void homeScreenBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeScreenBackButtonActionPerformed
-        loginScreenPanel.setVisible(true);
+        //loginScreenPanel.setVisible(true);
+        new LoginScreen().setVisible(true);
         homeScreenPanel.setVisible(false);
     }//GEN-LAST:event_homeScreenBackButtonActionPerformed
 

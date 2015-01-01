@@ -20,6 +20,8 @@ import clothes.*;
 
 public class Stores extends javax.swing.JFrame {
     
+    int index = 0;
+    
     // SQL variables
     Connection c = null;
     Statement  s = null;
@@ -28,20 +30,24 @@ public class Stores extends javax.swing.JFrame {
     LoginScreen ls;
     
     /* Lists to store the information from the rows and columns of the tables */
-    List<List<String>>  rowList     = new LinkedList<> ();
-    List<String>        columnList  = new LinkedList<> ();
+    List<List<String>>  rowList         = new LinkedList<> ();
+    List<String>        IDList          = new LinkedList<> ();
+    List<String>        storeNameList   = new LinkedList<> ();
+    List<String>        storeAddressList= new LinkedList<> ();
+    List<String>        storeManagerList= new LinkedList<> ();
+    List<String>        storeContactList= new LinkedList<> ();
     
     public Stores() {
         this.ls = new LoginScreen();
+        
         initComponents();
+        
         try {
             populateData();
-            loadStoresTable();        
+            loadStoresTable(index);        
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        
     }
 
     @SuppressWarnings("unchecked")
@@ -213,31 +219,48 @@ public class Stores extends javax.swing.JFrame {
     }//GEN-LAST:event_enterStoreButtonActionPerformed
 
     private void viewNextStoreButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewNextStoreButtonActionPerformed
-        
+        ++index;
+        if (index >= 5) index = 0;
+        loadStoresTable(index);
     }//GEN-LAST:event_viewNextStoreButtonActionPerformed
 
     public void populateData() {
         try {
             Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost/mydb", "harish", "earlscourt");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/dennis", "dennis", "earlscourt");
             s = c.createStatement();
             rs = s.executeQuery("SELECT * from stores");
             meta = rs.getMetaData();
             final int col_count = meta.getColumnCount();
             
             while (rs.next()) {
-                rowList.add(columnList);
                 
-                for (int i = 1; i < col_count; i++) {
+                /* Populate the column with values */
+                for (int i = 1; i <= col_count; i++) {
                     Object value = rs.getObject(i);
-                    
                     if (value != null) {
-                        columnList.add(String.valueOf(value));
+                        if (i == 1)     IDList.add(String.valueOf(value));
+                        if (i == 2)     storeNameList.add(String.valueOf(value));
+                        if (i == 3)     storeAddressList.add(String.valueOf(value));
+                        if (i == 4)     storeManagerList.add(String.valueOf(value));
+                        if (i == 5)     storeContactList.add(String.valueOf(value));
                     }
                     else {
-                        columnList.add(null);
+                        if (i == 1)     IDList.add(null);
+                        if (i == 2)     storeNameList.add(null);
+                        if (i == 3)     storeAddressList.add(null);
+                        if (i == 4)     storeManagerList.add(null);
+                        if (i == 5)     storeContactList.add(null);
                     }
                 }
+                
+                /* Insert elements(columns) into the 2-D Linked List */
+                rowList.add(IDList);
+                rowList.add(storeNameList);
+                rowList.add(storeAddressList);
+                rowList.add(storeManagerList);
+                rowList.add(storeContactList);
+                
             }
             
             // Closing all open connections
@@ -250,36 +273,15 @@ public class Stores extends javax.swing.JFrame {
         }        
     }
     
-    public void loadStoresTable() {
-        storeNameLabel.setText("aaa");
-        for(int i = 0; i < rowList.size(); i++) {  
-            int j = 0;
-            List<String> cols = rowList.get(i);
-            String curr_val = cols.get(i);
-            System.out.println(curr_val);
-            do  {
-                System.out.print("\nElement at " + j + " = " + cols.get(j));
-                curr_val = cols.get(j);
-                if (j < 5) {
-                    if (j == 0)     storeIdLabel.setText(curr_val);
-                    if (j == 1)     storeNameLabel.setText(curr_val);
-                    if (j == 2)     storeAddressLabel.setText(curr_val);
-                    if (j == 3)     storeManagerLabel.setText(curr_val);
-                    if (j == 4)     storeContactNumberLabel.setText(curr_val);
-                }
-                else {
-                    if (j % 5 == 0)     storeIdLabel.setText(curr_val);
-                    if (j % 5 == 1)     storeNameLabel.setText(curr_val);
-                    if (j % 5 == 2)     storeAddressLabel.setText(curr_val);
-                    if (j % 5 == 3)     storeManagerLabel.setText(curr_val);
-                    if (j % 5 == 4)     storeContactNumberLabel.setText(curr_val);                
-                }
-              
-                // Increment j onViewNextButton press
-                //if (viewNextStoreButtonActionPerformed()) ++j;
-                j++;
-            }   while (j < cols.size());
-        }
+    public void loadStoresTable(int index) {
+        List<String> columns = rowList.get(index);
+
+        storeIdLabel.setText(IDList.get(index));
+        storeNameLabel.setText(storeNameList.get(index));
+        storeAddressLabel.setText(storeAddressList.get(index));
+        storeManagerLabel.setText(storeManagerList.get(index));
+        storeContactNumberLabel.setText(storeContactList.get(index));
+        
     }
     
     public static void main(String args[]) {
