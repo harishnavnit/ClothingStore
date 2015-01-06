@@ -15,13 +15,13 @@ public class purchaseHistory extends javax.swing.JFrame {
 
     String  serialNum, storeName, clothType, clothColor, clothSize, clothPrice;
     int clothId, storeId;
-    
+
     // SQL variables
     Connection          c = null;
     Statement           s = null;
     ResultSet           rs = null;
     ResultSetMetaData   meta = null;
-    
+
     /* Lists to contain tabular data */
     List<List<String>>  rows            = new LinkedList<> ();
     List<Integer>       serialNumList   = new LinkedList<> ();
@@ -31,7 +31,7 @@ public class purchaseHistory extends javax.swing.JFrame {
     List<String>        clothSizeList   = new LinkedList<> ();
     List<String>        clothPriceList  = new LinkedList<> ();
     List<String>        storeNameList   = new LinkedList<> ();
-    
+
     public purchaseHistory() {
         initComponents();
         try {
@@ -76,7 +76,7 @@ public class purchaseHistory extends javax.swing.JFrame {
             }
         });
 
-        purchaseDoneSoFarLabel.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
+        purchaseDoneSoFarLabel.setFont(new java.awt.Font("Century Schoolbook L", 1, 24)); // NOI18N
         purchaseDoneSoFarLabel.setText("Purchases done so far");
 
         purchaseHistoryTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -150,7 +150,7 @@ public class purchaseHistory extends javax.swing.JFrame {
                 .addGroup(purchaseHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(shopAgainButton)
                     .addComponent(leaveStoreButton))
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
 
         getContentPane().add(purchaseHistoryPanel, "card2");
@@ -166,9 +166,9 @@ public class purchaseHistory extends javax.swing.JFrame {
         new stores.Stores().setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_shopAgainButtonActionPerformed
-    
+
     public boolean establishConnection() {
-        
+
         System.out.println("\nEstablishing Connection");
         try {
             Class.forName("org.postgresql.Driver");
@@ -179,10 +179,10 @@ public class purchaseHistory extends javax.swing.JFrame {
             e.printStackTrace();
             return false;
         }
-        
+
         return true;
     }
-    
+
     public void populateData() {
         // Use the getStoreName function
         try {
@@ -191,18 +191,18 @@ public class purchaseHistory extends javax.swing.JFrame {
                 rs = s.executeQuery("SELECT * from cloth");
                 meta = rs.getMetaData();
                 final int col_count = meta.getColumnCount();
-                
+
                 while (rs.next()) {
                     for (int i = 1; i <= col_count; i++) {
                         serialNumList.add(i);
-                        
+
                         Object val = rs.getObject(i);
-                        
+
                         if (val != null) {
                             //if (i == 1)     {storeIdList.add((Integer) val); getStoreName((Integer) val); }
                             if (i == 2)     clothIdList.add((Integer) val);
                             if (i == 3)     clothTypeList.add(String.valueOf(val));
-                            if (i == 4)     System.out.println("Cloth Color : " + String.valueOf(val));                            
+                            if (i == 4)     ;//System.out.println("Cloth Color : " + String.valueOf(val);
                             if (i == 5)     clothSizeList.add(String.valueOf(val));
                             if (i == 6)     clothPriceList.add(String.valueOf(val));
                         }
@@ -210,12 +210,12 @@ public class purchaseHistory extends javax.swing.JFrame {
                             //if (i == 1)     {storeIdList.add(null); getStoreName((Integer) val); }
                             if (i == 2)     clothIdList.add(null);
                             if (i == 3)     clothTypeList.add(null);
-                            if (i == 4)     System.out.println("Cloth Color : " + String.valueOf(val));
+                            if (i == 4)     ;//System.out.println("Cloth Color : " + String.valueOf(val));
                             if (i == 5)     clothSizeList.add(null);
                             if (i == 6)     clothPriceList.add(String.valueOf(val));
                         }
                     }
-                    
+
                     /* Insert columns into the rows */
                     //rows.add(serialNumList);
                     rows.add(storeNameList);
@@ -225,22 +225,22 @@ public class purchaseHistory extends javax.swing.JFrame {
                 }
             } else {
                 System.err.println("\nPlease ensure you're connected to the Database.");
-            }        
+            }
         } catch (Exception e) {
             System.err.println("Failed to fetch the data from database !");
             e.printStackTrace();
         }
-        
+
         //updatePurchaseTable(storeId, clothId);
     }
-    
+
     public void getStoreName(int val) {
-        
+
         try {
             if (establishConnection()) {
                 s = c.createStatement();
                 s.executeQuery("select getStoreName(" + val + ")");
-                
+
                 while (rs.next()) {
                     String name = rs.getString("getstorename");
                     storeNameList.add(name);
@@ -251,9 +251,9 @@ public class purchaseHistory extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
+
     public void updatePurchaseTable(int storeId, int clothId) {
-        /** NOTE : relation in backend has changed ! 
+        /** NOTE : relation in backend has changed !
          *  Need to provide customerId as one of the
          * arguments along with the list of args present already
          */
@@ -263,7 +263,7 @@ public class purchaseHistory extends javax.swing.JFrame {
             establishConnection();
             s  = c.createStatement();
             s.executeUpdate(insert);
-            
+
             s.close();
             c.close();
         }
@@ -271,14 +271,14 @@ public class purchaseHistory extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
+
     public void displayPurchaseTable() {
 
-        int row_count        = purchaseHistoryTable.getRowCount();      System.out.print("Table Row Count : " + row_count);
+        int row_count        = purchaseHistoryTable.getRowCount();
         int col_count        = purchaseHistoryTable.getColumnCount();
-        int actual_row_count = rows.size();                 
-        int actual_col_count = serialNumList.size();        
-        
+        int actual_row_count = rows.size();
+        int actual_col_count = serialNumList.size();
+
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 if (j == 0)     purchaseHistoryTable.setValueAt((Object)serialNumList.get(i), i, j);
@@ -288,14 +288,14 @@ public class purchaseHistory extends javax.swing.JFrame {
                 if (j == 3)     purchaseHistoryTable.setValueAt(clothSizeList.get(i), i, j);
                 if (j == 4)     purchaseHistoryTable.setValueAt((Object)clothPriceList.get(i), i, j);
             }
-        } 
+        }
     }
-    
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

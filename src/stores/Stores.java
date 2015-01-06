@@ -76,22 +76,22 @@ public class Stores extends javax.swing.JFrame {
 
         storeDetailsPanel.setBackground(new java.awt.Color(241, 200, 90));
 
-        storeNameDisplayLabel.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
+        storeNameDisplayLabel.setFont(new java.awt.Font("Century Schoolbook L", 1, 18)); // NOI18N
         storeNameDisplayLabel.setText("Store Details");
 
-        storeIdLabel.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        storeIdLabel.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
         storeIdLabel.setText("Store Id");
 
-        storeNameLabel.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        storeNameLabel.setFont(new java.awt.Font("Courier 10 Pitch", 0, 14)); // NOI18N
         storeNameLabel.setText("Store Name");
 
-        storeAddressLabel.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        storeAddressLabel.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
         storeAddressLabel.setText("Store Address");
 
-        storeManagerLabel.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        storeManagerLabel.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
         storeManagerLabel.setText("Store Manager");
 
-        storeContactNumberLabel.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        storeContactNumberLabel.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
         storeContactNumberLabel.setText("Manger Contact Number");
 
         backButton.setText("Back");
@@ -115,19 +115,19 @@ public class Stores extends javax.swing.JFrame {
             }
         });
 
-        storeIdInfoLabel.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        storeIdInfoLabel.setFont(new java.awt.Font("Century Schoolbook L", 1, 14)); // NOI18N
         storeIdInfoLabel.setText("ID");
 
-        storeNameInfoLabel.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        storeNameInfoLabel.setFont(new java.awt.Font("Century Schoolbook L", 1, 14)); // NOI18N
         storeNameInfoLabel.setText("Name");
 
-        storeAddressInfoLabel.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        storeAddressInfoLabel.setFont(new java.awt.Font("Century Schoolbook L", 1, 14)); // NOI18N
         storeAddressInfoLabel.setText("Address");
 
-        storeMangerInfoLabel.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        storeMangerInfoLabel.setFont(new java.awt.Font("Century Schoolbook L", 1, 14)); // NOI18N
         storeMangerInfoLabel.setText("Manager");
 
-        storeManagerContactNumberInfoLabel.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        storeManagerContactNumberInfoLabel.setFont(new java.awt.Font("Century Schoolbook L", 1, 14)); // NOI18N
         storeManagerContactNumberInfoLabel.setText("Contact ");
 
         storeImageDisplayLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/stores/store.jpg"))); // NOI18N

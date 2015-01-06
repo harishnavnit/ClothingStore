@@ -61,15 +61,17 @@ public class clothes extends javax.swing.JFrame {
         purchaseButton = new javax.swing.JButton();
         clothNextButton = new javax.swing.JButton();
         clothDisplayLabel = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.CardLayout());
 
         storePanel.setBackground(new java.awt.Color(210, 231, 175));
 
-        clothIdInfoLabel.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        clothIdInfoLabel.setFont(new java.awt.Font("Century Schoolbook L", 1, 14)); // NOI18N
         clothIdInfoLabel.setText("Shipment");
 
+        clothIdLabel.setFont(new java.awt.Font("Century Schoolbook L", 0, 12)); // NOI18N
         clothIdLabel.setText("Id");
 
         clothTypeInfoLabel.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
@@ -77,19 +79,21 @@ public class clothes extends javax.swing.JFrame {
 
         clothTypeLabel.setText("Type");
 
-        clothColorInfoLabel.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        clothColorInfoLabel.setFont(new java.awt.Font("Century Schoolbook L", 1, 14)); // NOI18N
         clothColorInfoLabel.setText("Color");
 
         clothColorLabel.setText("Color");
 
-        clothSizeInfoLabel.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        clothSizeInfoLabel.setFont(new java.awt.Font("Century Schoolbook L", 1, 14)); // NOI18N
         clothSizeInfoLabel.setText("Size");
 
+        clothSizeLabel.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
         clothSizeLabel.setText("Size");
 
         clothPriceInfoLabel.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
         clothPriceInfoLabel.setText("Price");
 
+        clothPriceLabel.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
         clothPriceLabel.setText("Price");
 
         clothBackButton.setText("Back");
@@ -114,6 +118,9 @@ public class clothes extends javax.swing.JFrame {
         });
 
         clothDisplayLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/stores/stack-o-shirts.jpg"))); // NOI18N
+
+        jLabel1.setFont(new java.awt.Font("Century Schoolbook L", 1, 18)); // NOI18N
+        jLabel1.setText("View Clothes");
 
         javax.swing.GroupLayout storePanelLayout = new javax.swing.GroupLayout(storePanel);
         storePanel.setLayout(storePanelLayout);
@@ -148,11 +155,17 @@ public class clothes extends javax.swing.JFrame {
                                     .addComponent(clothPriceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addComponent(clothDisplayLabel))
                 .addGap(0, 50, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, storePanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(66, 66, 66))
         );
         storePanelLayout.setVerticalGroup(
             storePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(storePanelLayout.createSequentialGroup()
-                .addGap(57, 57, 57)
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(31, 31, 31)
                 .addComponent(clothDisplayLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(storePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -307,6 +320,7 @@ public class clothes extends javax.swing.JFrame {
     private javax.swing.JLabel clothSizeLabel;
     private javax.swing.JLabel clothTypeInfoLabel;
     private javax.swing.JLabel clothTypeLabel;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JButton purchaseButton;
     private javax.swing.JPanel storePanel;
     // End of variables declaration//GEN-END:variables

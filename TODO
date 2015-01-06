@@ -1,0 +1,27 @@
+#TODO
+1. Add Admin/User login options
+2. Add Previous button view in Clothes and Stores
+3. Add online transaction checker before user enters purchase
+4. Option to remove elements from purchase table(if Admin)
+5. Add to cart option to the user
+6. Add date of purchase, total sum etc in purchase history table
+
+#errata
+1. purchase table is not populated correctly
+2. All stores have a common set of items/clothes
+
+#Tasks
+1. Add different modes of payment(cash on delivery/online payment)
+2. Package delivery option
+3. Improve user profile
+    -- Option to upload image
+    -- show his favourites
+    -- billing history
+4. User socializability
+    -- Can make friends(or import friends from facebook)
+5. Trending products
+
+#Wishlist
+1. Improved GUI(Help Wanted!)
+2. Mini discussion forum for users below a product
+3. User reports faulty products

@@ -64,10 +64,10 @@ public class LoginScreen extends javax.swing.JFrame {
 
         loginScreenPanel.setBackground(new java.awt.Color(224, 224, 124));
 
-        userNameLabel.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
+        userNameLabel.setFont(new java.awt.Font("Century Schoolbook L", 1, 18)); // NOI18N
         userNameLabel.setText("Username");
 
-        passwordLabel.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
+        passwordLabel.setFont(new java.awt.Font("Century Schoolbook L", 1, 18)); // NOI18N
         passwordLabel.setText("Password");
 
         enterButton.setText("Enter");
@@ -91,6 +91,7 @@ public class LoginScreen extends javax.swing.JFrame {
             }
         });
 
+        errorMsg.setFont(new java.awt.Font("Courier 10 Pitch", 0, 11)); // NOI18N
         errorMsg.setForeground(new java.awt.Color(255, 3, 0));
         errorMsg.setText("Invalid username and/or password");
         errorMsg.setVisible(false);
@@ -126,7 +127,7 @@ public class LoginScreen extends javax.swing.JFrame {
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, loginScreenPanelLayout.createSequentialGroup()
                                     .addGap(18, 18, 18)
                                     .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(43, 43, 43)
+                                    .addGap(55, 55, 55)
                                     .addComponent(enterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(loginScreenPanelLayout.createSequentialGroup()
                                 .addGap(18, 18, 18)
@@ -137,7 +138,7 @@ public class LoginScreen extends javax.swing.JFrame {
             loginScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(loginScreenPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(imageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
+                .addComponent(imageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(loginScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(userNameLabel)
@@ -177,10 +178,13 @@ public class LoginScreen extends javax.swing.JFrame {
         homeScreenWelcomeLabel.setFont(new java.awt.Font("TlwgTypewriter", 1, 18)); // NOI18N
         homeScreenWelcomeLabel.setText("Welcome");
 
+        ageLabel.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
         ageLabel.setText("Customer Age");
 
+        contactLabel.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
         contactLabel.setText("Contact Number");
 
+        addressLabel.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
         addressLabel.setText("Customer Address");
 
         viewStoreButton.setText("View Stores");
@@ -197,18 +201,19 @@ public class LoginScreen extends javax.swing.JFrame {
             }
         });
 
+        cnameLabel.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
         cnameLabel.setText("Customer Name");
 
-        customerNameLabel.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        customerNameLabel.setFont(new java.awt.Font("Century Schoolbook L", 1, 14)); // NOI18N
         customerNameLabel.setText("Name");
 
-        customerAgeLabel.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        customerAgeLabel.setFont(new java.awt.Font("Century Schoolbook L", 1, 14)); // NOI18N
         customerAgeLabel.setText("Age");
 
-        customerContactNumberLabel.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        customerContactNumberLabel.setFont(new java.awt.Font("Century Schoolbook L", 1, 14)); // NOI18N
         customerContactNumberLabel.setText("Number");
 
-        customerAddressLabel.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+        customerAddressLabel.setFont(new java.awt.Font("Century Schoolbook L", 1, 14)); // NOI18N
         customerAddressLabel.setText("Address");
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/customer/login/shopping.jpg"))); // NOI18N
@@ -239,9 +244,9 @@ public class LoginScreen extends javax.swing.JFrame {
                                     .addComponent(homeScreenBackButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(viewStoreButton))
                                 .addGap(38, 38, 38)
-                                .addGroup(homeScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(purchaseHistoryButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(homeScreenExitButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGroup(homeScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(purchaseHistoryButton)
+                                    .addComponent(homeScreenExitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(homeScreenPanelLayout.createSequentialGroup()
                         .addContainerGap()
@@ -262,9 +267,13 @@ public class LoginScreen extends javax.swing.JFrame {
                 .addGap(36, 36, 36)
                 .addGroup(homeScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homeScreenPanelLayout.createSequentialGroup()
-                        .addComponent(customerNameLabel)
+                        .addGroup(homeScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(customerNameLabel)
+                            .addComponent(cnameLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(customerAgeLabel)
+                        .addGroup(homeScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(customerAgeLabel)
+                            .addComponent(ageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(customerContactNumberLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -275,14 +284,10 @@ public class LoginScreen extends javax.swing.JFrame {
                             .addComponent(purchaseHistoryButton))
                         .addGap(5, 5, 5))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homeScreenPanelLayout.createSequentialGroup()
-                        .addComponent(cnameLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(contactLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(addressLabel)
-                        .addGap(49, 49, 49)))
+                        .addGap(43, 43, 43)))
                 .addGroup(homeScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(homeScreenExitButton)
                     .addComponent(homeScreenBackButton))
