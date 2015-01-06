@@ -9,7 +9,9 @@ import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JFrame;
+
 import stores.Stores;
+import transaction.Banks;
 
 public class clothes extends javax.swing.JFrame {
 
@@ -259,7 +261,7 @@ public class clothes extends javax.swing.JFrame {
     }
 
     private void purchaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purchaseButtonActionPerformed
-        new purchaseHistory().setVisible(true);
+        new Banks().setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_purchaseButtonActionPerformed
 
